@@ -10,7 +10,7 @@ void main(){
         appBar: AppBar(
           title: 
             Text(
-              "Project Health",
+              "Project HealThomas",
               
               //centerTitle: true,
               style: TextStyle(
@@ -48,11 +48,11 @@ class _BottomNavBarState extends State<BottomNavBar>{
           title: new Text('Página inicial'),),
         BottomNavigationBarItem(
           icon: new Icon(Icons.mic),
-          title: new Text('Fale com o app'),),
+          title: new Text('Fale com o Gostoso'),),
         
         BottomNavigationBarItem(
           icon: new Icon(Icons.healing),
-          title: new Text('Cheque sua saúde'),),
+          title: new Text('Cheque sua uretra'),),
         
         
       ]
