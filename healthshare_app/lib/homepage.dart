@@ -32,7 +32,7 @@ class Homepagebody extends StatelessWidget{
           
             ),
           Text(
-            "Próximos medicamentos",
+            "Próximas overdoses",
           
             style: TextStyle(
               fontFamily: 'Dosis',
