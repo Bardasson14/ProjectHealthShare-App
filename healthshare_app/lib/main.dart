@@ -44,17 +44,17 @@ class _BottomNavBarState extends State<BottomNavBar>{
       currentIndex: 0,
       items: [
         BottomNavigationBarItem(
+          
           icon: new Icon(Icons.home),
           title: new Text('Página inicial'),),
         BottomNavigationBarItem(
           icon: new Icon(Icons.mic),
-          title: new Text('Fale com o app'),),
+          title: new Text('Fale com o App'),),
         
         BottomNavigationBarItem(
           icon: new Icon(Icons.healing),
           title: new Text('Cheque sua saúde'),),
-        
-        
+          
       ]
     );
   }
