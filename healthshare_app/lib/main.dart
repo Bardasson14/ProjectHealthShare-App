@@ -44,6 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar>{
       currentIndex: 0,
       items: [
         BottomNavigationBarItem(
+          
           icon: new Icon(Icons.home),
           title: new Text('Página inicial'),),
         BottomNavigationBarItem(
@@ -53,8 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar>{
         BottomNavigationBarItem(
           icon: new Icon(Icons.healing),
           title: new Text('Cheque sua saúde'),),
-        
-        
+          
       ]
     );
   }

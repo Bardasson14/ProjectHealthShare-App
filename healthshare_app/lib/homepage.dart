@@ -10,8 +10,8 @@ class Homepagebody extends StatelessWidget{
     return Container(
       child: Column(
         children: <Widget>[
-          Padding(padding: EdgeInsets.only(top: 30)),
-        
+          Padding(padding: EdgeInsets.all(top: 30)),
+      
           Center (
             child: Text(
               "WELCOME, MR. JOSEPH",
@@ -33,7 +33,7 @@ class Homepagebody extends StatelessWidget{
           
             ),
           Text(
-            "Next medication doses:",
+            "Próximo medicamento:",
           
             style: TextStyle(
               fontFamily: 'Dosis',
@@ -42,6 +42,13 @@ class Homepagebody extends StatelessWidget{
             )
           ),
            Cards(),
+           Text("Próxima refeição",
+           style: TextStyle(
+              fontFamily: 'Dosis',
+              fontWeight: FontWeight.w600,
+              fontSize: 25,            
+            )
+            ),
            Cards()
         ],
       )
