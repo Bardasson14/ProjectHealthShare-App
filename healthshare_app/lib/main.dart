@@ -49,7 +49,7 @@ class _BottomNavBarState extends State<BottomNavBar>{
           title: new Text('Página inicial'),),
         BottomNavigationBarItem(
           icon: new Icon(Icons.mic),
-          title: new Text('Fale com o app'),),
+          title: new Text('Fale com o App'),),
         
         BottomNavigationBarItem(
           icon: new Icon(Icons.healing),
