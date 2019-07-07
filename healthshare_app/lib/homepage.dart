@@ -4,9 +4,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_sms/flutter_sms.dart';
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:alarmclock/alarmclock.dart';
 
 class CallsAndMessagesService {
   void call(String number) => launch("tel:$number");
@@ -14,7 +11,8 @@ class CallsAndMessagesService {
   void sendEmail(String email) => launch("mailto:$email");
 }
 
-class Homepagebody extends StatelessWidget{
+class HomepageBody extends StatelessWidget{
+  
   @override
   Widget build(BuildContext context) {
     return Container(
