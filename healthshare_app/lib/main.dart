@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:healthshare_app/sensors.dart';
 import 'homepage.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+void main() => runApp(MainApp());
+
+class MainApp extends StatefulWidget{
+
+  @override
+  State<StatefulWidget> createState(){
+    return MainAppState();  
+  }
+}
+
+var pageList = [
+  HomePageBody(),
+  HomePageBody(),
+  SensorsPage(),
+];
 
 
-void main(){
-  runApp(
-    MaterialApp(
+class MainAppState extends State<MainApp>{
+  int _selectedPage = 0;
+
+
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
       home: Scaffold(
 
           drawer: Drawer(
@@ -12,6 +34,7 @@ void main(){
               padding: EdgeInsets.all(20),
               children: <Widget>[
                 SizedBox(
+                  width: 220,
                   height: 150,
                   child: DrawerHeader(
                     child: Text('Contatos de emergência',
@@ -38,7 +61,6 @@ void main(){
                     onPressed: (){
                       CallsAndMessagesService c = CallsAndMessagesService();
                       c.call("192");
-                      
                     },
                     height: 35,
                     minWidth: 35,
@@ -70,8 +92,8 @@ void main(){
                   ),
                 ),
                 ListTile(
-                leading: Icon( Icons.ac_unit,
-                color: Colors.blue,),
+                leading: Icon(FontAwesomeIcons.fire,
+                color: Colors.deepOrange,),
                 title: Text("BOMBEIROS (193)", 
                 style: TextStyle(
                   fontSize: 18
@@ -107,49 +129,38 @@ void main(){
               )),
             centerTitle: true,
           ),
-          body: HomepageBody(),
-          bottomNavigationBar: BottomNavBar(),
+          body: pageList[_selectedPage],
+          bottomNavigationBar: 
+            BottomNavigationBar(
+              
+              fixedColor: Colors.blueAccent,
+              currentIndex: _selectedPage,
+              onTap: (int index){
+                setState(() {
+                  _selectedPage = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                    
+                  icon: new Icon(Icons.home),
+                  title: new Text('Página inicial'),),
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.mic),
+                  title: new Text('Fale com o App'),),
+                
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.healing),
+                  title: new Text('Cheque sua saúde'),),
+            
+                  
+              ],
+              //onTap: _onTap,
+            
+            ),
         
         ),
-      )
-  );
-}
-
-class BottomNavBar extends StatefulWidget{
-  @override
-  State <StatefulWidget> createState() {
-    return _BottomNavBarState();
-  } 
-}
-
-class _BottomNavBarState extends State<BottomNavBar>{
-  int currentTab = 0;
-
-  @override
-  Widget build(BuildContext context) {
-
-    return BottomNavigationBar(
-      
-      fixedColor: Colors.blueAccent,
-      currentIndex: currentTab,
-
-      items: [
-        BottomNavigationBarItem(
-            
-          icon: new Icon(Icons.home),
-          title: new Text('Página inicial'),),
-        BottomNavigationBarItem(
-          icon: new Icon(Icons.mic),
-          title: new Text('Fale com o App'),),
-        
-        BottomNavigationBarItem(
-          icon: new Icon(Icons.healing),
-          title: new Text('Cheque sua saúde'),),
-    
-          
-      ],
-      //onTap: _onTap,
-    
-    );
+      );
   }
 }
+

@@ -11,8 +11,7 @@ class CallsAndMessagesService {
   void sendEmail(String email) => launch("mailto:$email");
 }
 
-class HomepageBody extends StatelessWidget{
-  
+class HomePageBody extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -134,7 +133,8 @@ class Contact extends StatelessWidget{
                 height: 30,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                 padding: EdgeInsets.all(20),
-                child: Icon(Icons.phone),
+                child: Icon(Icons.phone,
+                  color: Colors.green),
                 color: Colors.white,
                 onPressed: (){
                   CallsAndMessagesService c = CallsAndMessagesService();
@@ -155,7 +155,8 @@ class Contact extends StatelessWidget{
                 height: 30,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                 padding: EdgeInsets.all(20),
-                child: Icon(Icons.healing),
+                child: Icon(Icons.healing,
+                  color: Colors.red),
                 color: Colors.white,
                 onPressed: (){
                   if (contactPhone!=null){
@@ -179,7 +180,8 @@ class Contact extends StatelessWidget{
                 height: 30,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
                 padding: EdgeInsets.all(20),
-                child: Icon(Icons.sms),
+                child: Icon(Icons.sms,
+                  color: Colors.deepOrange),
                 color: Colors.white,
                 onPressed: (){
                   CallsAndMessagesService c = CallsAndMessagesService();
