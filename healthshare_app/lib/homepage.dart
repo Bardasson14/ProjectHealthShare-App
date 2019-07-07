@@ -2,7 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_sms/flutter_sms.dart';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:alarmclock/alarmclock.dart';
 
+class CallsAndMessagesService {
+  void call(String number) => launch("tel:$number");
+  void sendSms(String number) => launch("sms:$number");
+  void sendEmail(String email) => launch("mailto:$email");
+}
 
 class Homepagebody extends StatelessWidget{
   @override
@@ -10,7 +20,7 @@ class Homepagebody extends StatelessWidget{
     return Container(
       child: Column(
         children: <Widget>[
-          Padding(padding: EdgeInsets.only(top: 30)),
+          Padding(padding: EdgeInsets.only(top: 20)),
       
           Center (
             child: Text(
@@ -25,8 +35,8 @@ class Homepagebody extends StatelessWidget{
           ),
           Row (
             children: <Widget>[
-              CarerPhoto(),
-              CarerPhoto(),
+              Contact(photoDir: "imgs/Personicon.png", contactName: "Dustin", contactPhone: "21972390695",),
+              Contact(photoDir: "imgs/Personicon.png", contactName: "Laura",),
             ]
           ),
           Divider(color: Colors.black,
@@ -34,35 +44,36 @@ class Homepagebody extends StatelessWidget{
             ),
           Text(
             "Próximo medicamento:",
-          
             style: TextStyle(
               fontFamily: 'Dosis',
               fontWeight: FontWeight.w600,
-              fontSize: 25,            
+              fontSize: 30,            
             )
           ),
-           Cards(),
-           Text("\nPróxima refeição",
+           MedicineCards(clockAlarmTime: "4:00", doseQt: "1x", medicineName: "Paracetamal", ),
+           Text("\nPróxima refeição:",
            style: TextStyle(
               fontFamily: 'Dosis',
               fontWeight: FontWeight.w600,
-              fontSize: 25,            
+              fontSize: 30,            
             )
             ),
-           Cards()
+            MealCards(clockAlarmTime: "8:30", label: "Café da Manhã",),
+           
+           //Cards()
         ],
       )
     );
   } 
 }
 
-//class _CarerPhoto extends StatefulWidget{
-//  @override
- // State<StatefulWidget> createState() {
- //   return CarerPhoto();
- // }
-//}
-class CarerPhoto extends StatelessWidget{
+class Contact extends StatelessWidget{
+
+  String photoDir;
+  String contactName;
+  String contactPhone;
+
+  Contact({Key key, this.photoDir, this.contactName, this.contactPhone});
 
   @override
   Widget build(BuildContext context) {
@@ -71,18 +82,20 @@ class CarerPhoto extends StatelessWidget{
     return Container(        
         alignment: Alignment.center,
         child: Column(
-          children: <Widget>[           
+          children: <Widget>[ 
+                      
             Padding(padding: EdgeInsets.only(left:160, top:50, right:30)),
+          
             FlatButton(
               onPressed: (){
-                menu(context);
+                menu(context, this.contactPhone, this.contactName);
               },
               padding: EdgeInsets.all(0),
-              child: Image.asset('imgs/Personicon.png'),
+              child: Image.asset(this.photoDir),
             ),
             //Image(image: assetImage, width:100, height: 120,),
             Text(
-              "Lorem",
+              this.contactName,
               style: TextStyle(
                 decoration: TextDecoration.none,
                 fontFamily: 'Dosis',
@@ -93,66 +106,115 @@ class CarerPhoto extends StatelessWidget{
         )
     );
   }
-  void menu(BuildContext context){
-    
-    var numero = AlertDialog(
-      title: Text("\ +INFO"),
-      content: Text("\ Not ready yet."),
-    );
+  void menu(BuildContext context, String contactPhone, String contactName){
+    List<String> recipients;
+    Dialog d = new Dialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+    child: Container(
+      height: 200,
+      width: 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(15.0),
+          ),
+          
+          Text(" NOME: ${contactName}\nTELEFONE: ${contactPhone}\n",
+            style: TextStyle(
+              fontSize:22
+            )),
+          Row(
+            
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              
+              Padding(
+                padding: EdgeInsets.only(left:10, right:10),
+                child: MaterialButton(
+                minWidth: 30,
+                height: 30,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                padding: EdgeInsets.all(20),
+                child: Icon(Icons.phone),
+                color: Colors.white,
+                onPressed: (){
+                  CallsAndMessagesService c = CallsAndMessagesService();
+                  if (contactPhone!=null){
+                    c.call(contactPhone);
+                  }
+                  else{
+
+                  }
+                }   
+
+              ))
+              ,
+              Padding(
+                padding: EdgeInsets.only(left:10, right:10),
+                child: MaterialButton(
+                minWidth: 30,
+                height: 30,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                padding: EdgeInsets.all(20),
+                child: Icon(Icons.healing),
+                color: Colors.white,
+                onPressed: (){
+                  if (contactPhone!=null){
+                    //CÓDIGO PARA ENVIO DE SMS AUTOMÁTICO
+                    if (!recipients.contains(contactPhone))
+                      recipients.add(contactPhone);
+                    String message = "PROJECT HEALTH ALERTA:\n {username} PRECISA DE AJUDA! ENTRE EM CONTATO O MAIS RÁPIDO POSSÍVEL!";
+                    _sendSMS(message, recipients);
+                    print("Mensagem enviada com sucesso");
+                  }
+                  else{
+                    //ALERTDIALOG INDICANDO ERRO
+                  }
+                }   
+
+              )),
+              Padding(
+                padding: EdgeInsets.only(left:10, right:10),
+                child: MaterialButton(
+                minWidth: 30,
+                height: 30,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                padding: EdgeInsets.all(20),
+                child: Icon(Icons.sms),
+                color: Colors.white,
+                onPressed: (){
+                  CallsAndMessagesService c = CallsAndMessagesService();
+                  c.sendSms(contactPhone);
+                }   
+
+              ))
+            ],
+          )
+        ],
+      ),  
+    ),
+  );
+
     showDialog(
       context: context,
       builder: (BuildContext context){
-        return numero;
+        return d;
       }
     );
   }
+
+  
 }
 
-/*class Card1 extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() {
-    return _Card();
-  }
-}
-class _Card extends State<Card1>{
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      width: 330,
-      height: 80,
-      child: Row(children: <Widget>[
-        Padding(padding: EdgeInsets.symmetric(horizontal: 10),),
-        Flexible(child:TextField(
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            labelText: 'Remédio',
-            icon: Icon(Icons.healing),
-                ),
-              )
-            )      
-          ],
-        ),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.blue),
-        color: Colors.white   
-       //   borderRadius: BorderRadius.all(Radius.circular(10))
-      ),
-    );
-  }
-}
-*/
 
 class MedicineCards extends StatelessWidget{
   
-  @override
-  String medicineName;
-  String clockAlarmTime;
-  String doseQt;
+  String doseQt, clockAlarmTime, medicineName;
+  MedicineCards({Key key, this.doseQt, this.clockAlarmTime, this.medicineName}) : super(key: key);
 
-  Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context){
     return Container(
       margin: EdgeInsets.only(top: 10),
       width: 330,
@@ -164,23 +226,23 @@ class MedicineCards extends StatelessWidget{
              leading:
                //padding: EdgeInsets.all(30),
                 Text(
-                  
-                  "1x",
+                  this.doseQt,
                 style: TextStyle(
                   fontSize: 40,
                   fontFamily: 'SourceSansPro',
                   fontWeight: FontWeight.w900,
                 )),
              
-             title: Text("   PURAN T4",
+             title: Text("   " + this.medicineName,
              style: 
               TextStyle(
                 fontFamily: 'SourceSansPro',
                 fontSize: 30,
                 fontWeight: FontWeight.w900,
-              )),
+                )
+              ),
               trailing:
-                Text("15:00",
+                Text(this.clockAlarmTime,
                 style: TextStyle(
                   fontSize:25
                 )),
@@ -196,5 +258,53 @@ class MedicineCards extends StatelessWidget{
       ),
     );
   }
+}
 
+
+class MealCards extends StatelessWidget{
+  String label, clockAlarmTime;
+  MealCards({Key key, this.label, this.clockAlarmTime}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      width: 330,
+      height: 90,
+      child: Column(children: <Widget>[
+        Padding(padding: EdgeInsets.all(5),),
+            ListTile(
+             title: Text("   " + this.label,
+             style: 
+              TextStyle(
+                fontFamily: 'SourceSansPro',
+                fontSize: 30,
+                fontWeight: FontWeight.w900,
+              )),
+              trailing:
+                Text(this.clockAlarmTime,
+                style: TextStyle(
+                  fontSize:25
+                )),
+           )
+          ],
+        ),
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.blue),
+        color: Colors.white   
+       //   borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
+    );
+  }
+}
+
+void _sendSMS(String message, List<String> recipents) async {
+ String _result = await FlutterSms
+        .sendSMS(message: message, recipients: recipents)
+        .catchError((onError) {
+      print(onError);
+    });
+print(_result);
 }
