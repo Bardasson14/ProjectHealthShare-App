@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:fit_kit/fit_kit.dart';
 
 class SensorsPage extends StatelessWidget{
+  
+  String heartRate = "";
+  String bloodPressure = "";
 
   @override
   Widget build(BuildContext context){
@@ -63,7 +66,7 @@ class SensorsPage extends StatelessWidget{
                             child: Icon(Icons.play_arrow,
                               color: Colors.white,),
                               onPressed:(){
-                                
+                                _asyncHeartRateInputDialog(context);
                               } ,
                           ),
                           
@@ -75,8 +78,6 @@ class SensorsPage extends StatelessWidget{
                     child:
                       Center(
                         child: ListTile(
-                        
-                          
                           title: Text("\ÚLTIMO RESULTADO",
                             style: TextStyle(
                               fontSize: 25,
@@ -91,7 +92,7 @@ class SensorsPage extends StatelessWidget{
                             ),
                             child: Column(
                               children: <Widget>[
-                                Text("100",
+                                Text(heartRate,
                                   style: TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.w900,
@@ -152,7 +153,7 @@ class SensorsPage extends StatelessWidget{
                             child: Icon(Icons.play_arrow,
                               color: Colors.white,),
                               onPressed:(){
-                                
+                                _asyncBloodPressureInputDialog(context);
                               } ,
                           ),
                           
@@ -165,7 +166,6 @@ class SensorsPage extends StatelessWidget{
                       Center(
                         child: ListTile(
                         
-                          
                           title: Text("\ÚLTIMO RESULTADO",
                             style: TextStyle(
                               fontSize: 25,
@@ -180,9 +180,9 @@ class SensorsPage extends StatelessWidget{
                             ),
                             child: Column(
                               children: <Widget>[
-                                Text("12/8",
+                                Text(bloodPressure,
                                   style: TextStyle(
-                                    fontSize: 25,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w900,
                                     color: Colors.white,
                                   ),),
@@ -206,8 +206,74 @@ class SensorsPage extends StatelessWidget{
           
          
           ],
-       
-      ),
+     
+        ),
     );
   }
+
+Future<String> _asyncBloodPressureInputDialog(BuildContext context) async {
+  return showDialog <String>(
+    context: context,
+    barrierDismissible: false, // dialog is dismissible with a tap on the barrier
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Entre com a pressão arterial: '),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+                child: new TextField(
+              autofocus: true,
+              decoration: new InputDecoration(
+                  labelText: 'Pressão arterial', hintText: 'ex.: 12/8'),
+              onChanged: (value) {
+                bloodPressure = value;
+              },
+            ))
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop(bloodPressure);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<String> _asyncHeartRateInputDialog(BuildContext context) async {
+  return showDialog <String>(
+    context: context,
+    barrierDismissible: false, // dialog is dismissible with a tap on the barrier
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Entre com a quantidade de batimentos por minuto: '),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+                child: new TextField(
+              autofocus: true,
+              decoration: new InputDecoration(
+                  labelText: 'BPM', hintText: 'ex.: 100'),
+              onChanged: (value) {
+                heartRate = value;
+              },
+            ))
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop(heartRate);
+            },
+          ),
+        ],
+      );
+    },
+  );
+ }
 }
