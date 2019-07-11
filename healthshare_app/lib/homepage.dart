@@ -235,11 +235,11 @@ class MedicineCards extends StatelessWidget{
   Widget build(BuildContext context){
     return Container(
       margin: EdgeInsets.only(top: 10),
-      width: 330,
+      width: 330, 
       height: 90,
       child: 
       
-      Column(children: <Widget>[
+      Column(children: FutureBuilder <Medication> [
         Padding(padding: EdgeInsets.all(5),),
             ListTile(
              leading:
